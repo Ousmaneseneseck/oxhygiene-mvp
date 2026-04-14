@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OXHYGIENE - La télémédecine réinventée pour l'Afrique</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #fff;
+            overflow-x: hidden;
+        }
+
+        /* Navigation Premium */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 20px 60px;
+            background: rgba(255,255,255,0.98);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+
+        .navbar.scrolled {
+            padding: 12px 60px;
+            background: white;
+            box-shadow: 0 4px 30px rgba(0,0,0,0.1);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #0066FF, #00CC99);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo-icon i {
+            font-size: 22px;
+            color: white;
+        }
+
+        .logo-text {
+            font-size: 24px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #0066FF, #00CC99);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #1a1a2e;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover { color: #0066FF; }
+
+        .btn-nav {
+            background: linear-gradient(135deg, #0066FF, #00CC99);
+            color: white !important;
+            padding: 10px 24px;
+            border-radius: 30px;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 120px 60px 80px;
+            background: linear-gradient(135deg, #f0f7ff 0%, #e8f5e9 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 60%;
+            height: 120%;
+            background: radial-gradient(circle, rgba(0,102,255,0.05) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .hero-content {
+            flex: 1;
+            animation: fadeInUp 0.8s ease;
+        }
+
+        .badge {
+            display: inline-block;
+            background: rgba(0,102,255,0.1);
+            color: #0066FF;
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 24px;
+        }
+
+        .hero-content h1 {
+            font-size: 56px;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 24px;
+            color: #1a1a2e;
+        }
+
+        .hero-content h1 span {
+            background: linear-gradient(135deg, #0066FF, #00CC99);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-content p {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 32px;
+            line-height: 1.6;
+            max-width: 500px;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .hero-stat {
+            text-align: left;
+        }
+
+        .hero-stat-number {
+            font-size: 28px;
+            font-weight: 800;
+            color: #0066FF;
+        }
+
+        .hero-stat-label {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .hero-image {
+            flex: 1;
+            text-align: center;
+            animation: fadeInRight 0.8s ease;
+        }
+
+        .hero-image img {
+            max-width: 100%;
+            border-radius: 30px;
+            box-shadow: 0 30px 50px rgba(0,0,0,0.15);
+        }
+
+        /* Buttons */
+        .btn-group {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #0066FF, #00CC99);
+            color: white;
+            padding: 14px 36px;
+            border-radius: 40px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.3s;
+            display: inline-block;
+            box-shadow: 0 10px 20px rgba(0,102,255,0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(0,102,255,0.4);
+        }
+
+        .btn-outline {
+            border: 2px solid #0066FF;
+            color: #0066FF;
+            padding: 12px 34px;
+            border-radius: 40px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.3s;
+            display: inline-block;
+            background: white;
+        }
+
+        .btn-outline:hover {
+            background: #0066FF;
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        /* Sections */
+        .section {
+            padding: 80px 60px;
+        }
+
+        .section-dark {
+            background: #f8fafc;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 36px;
+            font-weight: 800;
+            margin-bottom: 16px;
+            color: #1a1a2e;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 60px;
+            font-size: 18px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Modules Grid */
+        .modules-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .module-card {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            transition: 0.3s;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            border: 1px solid #eef2f6;
+        }
+
+        .module-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        .module-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #0066FF20, #00CC9920);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .module-icon i {
+            font-size: 30px;
+            color: #0066FF;
+        }
+
+        .module-card h3 {
+            font-size: 20px;
+            margin-bottom: 12px;
+            color: #1a1a2e;
+        }
+
+        .module-card p {
+            color: #666;
+            line-height: 1.5;
+        }
+
+        /* Pricing */
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .pricing-card {
+            background: white;
+            border-radius: 24px;
+            overflow: hidden;
+            transition: 0.3s;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            position: relative;
+        }
+
+        .pricing-card.popular {
+            transform: scale(1.02);
+            border: 2px solid #0066FF;
+        }
+
+        .popular-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #0066FF, #00CC99);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .pricing-header {
+            padding: 30px;
+            text-align: center;
+            background: #f8fafc;
+        }
+
+        .pricing-header h3 {
+            font-size: 24px;
+            margin-bottom: 16px;
+        }
+
+        .price {
+            font-size: 48px;
+            font-weight: 800;
+            color: #0066FF;
+        }
+
+        .price span {
+            font-size: 16px;
+            font-weight: 400;
+            color: #666;
+        }
+
+        .pricing-body {
+            padding: 30px;
+        }
+
+        .pricing-body ul {
+            list-style: none;
+            margin-bottom: 30px;
+        }
+
+        .pricing-body li {
+            padding: 10px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .pricing-body li i {
+            color: #00CC99;
+        }
+
+        .btn-pricing {
+            display: block;
+            text-align: center;
+            background: #0066FF;
+            color: white;
+            padding: 14px;
+            border-radius: 40px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .btn-pricing:hover {
+            background: #0052cc;
+        }
+
+        /* Testimonials */
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .testimonial-card {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        }
+
+        .testimonial-text {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #555;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .testimonial-author img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .author-name {
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .author-title {
+            font-size: 13px;
+            color: #666;
+        }
+
+        .rating {
+            color: #ffc107;
+            margin-top: 10px;
+        }
+
+        /* Stats Counter */
+        .stats-section {
+            background: linear-gradient(135deg, #0066FF, #00CC99);
+            padding: 60px;
+            color: white;
+            text-align: center;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 40px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .stat-number {
+            font-size: 48px;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        /* CTA */
+        .cta {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            padding: 80px 60px;
+            text-align: center;
+            color: white;
+        }
+
+        .cta h2 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+
+        .cta p {
+            font-size: 18px;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        .btn-cta {
+            background: linear-gradient(135deg, #0066FF, #00CC99);
+            color: white;
+            padding: 16px 48px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            display: inline-block;
+            transition: 0.3s;
+            font-size: 18px;
+        }
+
+        .btn-cta:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 30px rgba(0,102,255,0.4);
+        }
+
+        /* Footer */
+        .footer {
+            background: #1a1a2e;
+            color: white;
+            padding: 50px 60px 30px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-col h4 {
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+
+        .footer-col a {
+            display: block;
+            color: #aaa;
+            text-decoration: none;
+            margin-bottom: 12px;
+            transition: 0.3s;
+        }
+
+        .footer-col a:hover { color: #0066FF; }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid #333;
+            color: #aaa;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInRight {
+            from { opacity: 0; transform: translateX(30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .navbar { padding: 15px 20px; }
+            .nav-links { display: none; }
+            .hero { flex-direction: column; padding: 100px 20px 50px; text-align: center; }
+            .hero-content h1 { font-size: 36px; }
+            .btn-group { justify-content: center; }
+            .hero-stats { justify-content: center; }
+            .section { padding: 50px 20px; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .section-title { font-size: 28px; }
+        }
+
+        /* Floating Elements */
+        .floating {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="logo">
+            <div class="logo-icon"><i class="fas fa-heartbeat"></i></div>
+            <span class="logo-text">OXHYGIENE</span>
+        </div>
+        <div class="nav-links">
+            <a href="#modules">Solutions</a>
+            <a href="#pricing">Tarifs</a>
+            <a href="#testimonials">Témoignages</a>
+            <a href="#contact" class="btn-nav">Accéder</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="badge">
+                <i class="fas fa-certificate"></i> Solution Médicale Certifiée
+            </div>
+            <h1>Votre santé <span>connectée</span><br>Simple et Efficace</h1>
+            <p>OXHYGIENE réinvente la télémédecine pour l'Afrique. Consultations à distance, kits médicaux connectés et suivi personnalisé.</p>
+            <div class="btn-group">
+                <a href="http://localhost:3001" class="btn-primary" target="_blank">
+                    <i class="fas fa-stethoscope"></i> Espace Patient
+                </a>
+                <a href="http://localhost:3001" class="btn-outline" target="_blank">
+                    <i class="fas fa-user-md"></i> Espace Médecin
+                </a>
+            </div>
+            <div class="hero-stats">
+                <div class="hero-stat">
+                    <div class="hero-stat-number">500+</div>
+                    <div class="hero-stat-label">Patients satisfaits</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-number">50+</div>
+                    <div class="hero-stat-label">Médecins partenaires</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-number">24/7</div>
+                    <div class="hero-stat-label">Disponibilité</div>
+                </div>
+            </div>
+        </div>
+        <div class="hero-image floating">
+            <img src="https://placehold.co/500x450/0066FF/white?text=OXHYGIENE+APP" alt="OXHYGIENE App">
+        </div>
+    </section>
+
+    <!-- Modules (10 priorités) -->
+    <section id="modules" class="section section-dark">
+        <h2 class="section-title">10 priorités clés pour une gestion médicale optimale</h2>
+        <p class="section-subtitle">Une plateforme complète qui répond à tous vos besoins de télémédecine</p>
+        <div class="modules-grid">
+            <div class="module-card"><div class="module-icon"><i class="fas fa-heartbeat"></i></div><h3>Suivi des constantes vitales</h3><p>Kits connectés pour surveiller tension, glycémie et oxygénation en temps réel.</p></div>
+            <div class="module-card"><div class="module-icon"><i class="fas fa-video"></i></div><h3>Téléconsultation HD</h3><p>Vidéoconférence sécurisée avec qualité optimale.</p></div>
+            <div class="module-card"><div class="module-icon"><i class="fas fa-calendar-check"></i></div><h3>Gestion des rendez-vous</h3><p>Planification automatisée et rappels patients.</p></div>
+            <div class="module-card"><div class="module-icon"><i class="fas fa-chart-line"></i></div><h3>Analyse intelligente</h3><p>Alertes personnalisées basées sur vos données médicales.</p></div>
+            <div class="module-card"><div class="module-icon"><i class="fas fa-file-medical"></i></div><h3>DME intégré</h3><p>Compatible avec les dossiers médicaux électroniques.</p></div>
+            <div class="module-card"><div class="module-icon"><i class="fas fa-users"></i></div><h3>Outils collaboratifs</h3><p>Équipes médicales multidisciplinaires.</p></div>
+            <div class="module-card"><div class="module-icon"><i class="fas fa-graduation-cap"></i></div><h3>Formation en ligne</h3><p>Support et formation pour professionnels de santé.</p></div>
+            <div class="module-card"><div class="module-icon"><i class="fas fa-prescription"></i></div><h3>Prescriptions à distance</h3><p>Gestion et renouvellements sécurisés.</p></div>
+            <div class="module-card"><div class="module-icon"><i class="fas fa-chart-pie"></i></div><h3>Statistiques détaillées</h3><p>Rapports pour améliorer la prise en charge.</p></div>
+            <div class="module-card"><div class="module-icon"><i class="fas fa-mobile-alt"></i></div><h3>Interface intuitive</h3><p>Accessible sur mobile, tablette et desktop.</p></div>
+        </div>
+    </section>
+
+    <!-- Pricing -->
+    <section id="pricing" class="section">
+        <h2 class="section-title">Une offre flexible et transparente</h2>
+        <p class="section-subtitle">Des tarifs adaptés à vos besoins, sans surprise</p>
+        <div class="pricing-grid">
+            <div class="pricing-card">
+                <div class="pricing-header">
+                    <h3>Essentiel</h3>
+                    <div class="price">35 000 <span>FCFA/mois</span></div>
+                </div>
+                <div class="pricing-body">
+                    <ul>
+                        <li><i class="fas fa-check-circle"></i> Téléconsultations illimitées</li>
+                        <li><i class="fas fa-check-circle"></i> Kit connecté standard</li>
+                        <li><i class="fas fa-check-circle"></i> Support email</li>
+                    </ul>
+                    <a href="#" class="btn-pricing">Choisir</a>
+                </div>
+            </div>
+
+            <div class="pricing-card popular">
+                <div class="popular-badge">POPULAIRE</div>
+                <div class="pricing-header">
+                    <h3>Avancé</h3>
+                    <div class="price">65 000 <span>FCFA/mois</span></div>
+                </div>
+                <div class="pricing-body">
+                    <ul>
+                        <li><i class="fas fa-check-circle"></i> Toutes les fonctions Essentiel</li>
+                        <li><i class="fas fa-check-circle"></i> Kit connecté avancé</li>
+                        <li><i class="fas fa-check-circle"></i> Support prioritaire 24/7</li>
+                        <li><i class="fas fa-check-circle"></i> Analyses IA incluses</li>
+                    </ul>
+                    <a href="#" class="btn-pricing">Choisir</a>
+                </div>
+            </div>
+
+            <div class="pricing-card">
+                <div class="pricing-header">
+                    <h3>Entreprise</h3>
+                    <div class="price">Sur devis</div>
+                </div>
+                <div class="pricing-body">
+                    <ul>
+                        <li><i class="fas fa-check-circle"></i> Solutions personnalisées</li>
+                        <li><i class="fas fa-check-circle"></i> Intégrations spécifiques</li>
+                        <li><i class="fas fa-check-circle"></i> Accompagnement dédié</li>
+                        <li><i class="fas fa-check-circle"></i> API sur mesure</li>
+                    </ul>
+                    <a href="#" class="btn-pricing">Contactez-nous</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Counter -->
+    <div class="stats-section">
+        <div class="stats-grid">
+            <div><div class="stat-number">95%</div><div class="stat-label">Satisfaction patient</div></div>
+            <div><div class="stat-number">40%</div><div class="stat-label">Gain de temps praticiens</div></div>
+            <div><div class="stat-number">30%</div><div class="stat-label">Réduction hospitalisations</div></div>
+            <div><div class="stat-number">100%</div><div class="stat-label">Données sécurisées</div></div>
+        </div>
+    </div>
+
+    <!-- Testimonials -->
+    <section id="testimonials" class="section section-dark">
+        <h2 class="section-title">Ils nous font confiance</h2>
+        <p class="section-subtitle">Témoignages de professionnels et patients</p>
+        <div class="testimonials-grid">
+            <div class="testimonial-card"><p class="testimonial-text">"OXHYGIENE a transformé le suivi de mes patients chroniques. Les kits connectés sont d'une aide précieuse."</p><div class="testimonial-author"><img src="https://randomuser.me/api/portraits/women/1.jpg"><div><div class="author-name">Dr. Sophie Martin</div><div class="author-title">Cardiologue</div><div class="rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div></div></div></div>
+            <div class="testimonial-card"><p class="testimonial-text">"Grâce à OXHYGIENE, je peux consulter mon médecin sans me déplacer. Gain de temps et d'argent !"</p><div class="testimonial-author"><img src="https://randomuser.me/api/portraits/men/1.jpg"><div><div class="author-name">Amadou Diallo</div><div class="author-title">Patient, Dakar</div><div class="rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div></div></div></div>
+            <div class="testimonial-card"><p class="testimonial-text">"Une plateforme intuitive et sécurisée. Mes patients adorent la simplicité de prise de RDV."</p><div class="testimonial-author"><img src="https://randomuser.me/api/portraits/women/2.jpg"><div><div class="author-name">Dr. Fatima Sow</div><div class="author-title">Gynécologue</div><div class="rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div></div></div></div>
+        </div>
+    </section>
+
+    <!-- Security -->
+    <div class="section" style="background: white;">
+        <div style="max-width: 1000px; margin: 0 auto; text-align: center;">
+            <i class="fas fa-shield-alt" style="font-size: 48px; color: #0066FF; margin-bottom: 20px; display: inline-block;"></i>
+            <h2 class="section-title" style="margin-top: 0;">Vos données médicales protégées</h2>
+            <p style="max-width: 700px; margin: 0 auto 40px; color: #666;">Conformité RGPD, hébergement HDS, cryptage bancaire et audit régulier par des experts indépendants.</p>
+            <div style="display: flex; justify-content: center; gap: 40px; flex-wrap: wrap;">
+                <div><i class="fas fa-lock" style="font-size: 24px; color: #00CC99;"></i><p style="margin-top: 8px;">Cryptage AES-256</p></div>
+                <div><i class="fas fa-database" style="font-size: 24px; color: #00CC99;"></i><p style="margin-top: 8px;">Hébergement HDS</p></div>
+                <div><i class="fas fa-check-circle" style="font-size: 24px; color: #00CC99;"></i><p style="margin-top: 8px;">Certification ISO</p></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CTA Final -->
+    <div class="cta">
+        <h2>Prêt à transformer votre pratique médicale ?</h2>
+        <p>Rejoignez des milliers de professionnels qui font confiance à OXHYGIENE</p>
+        <a href="http://localhost:3001" class="btn-cta" target="_blank">
+            <i class="fas fa-arrow-right"></i> Démarrer maintenant
+        </a>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-grid">
+            <div class="footer-col"><h4>OXHYGIENE</h4><a href="#">À propos</a><a href="#">Blog</a><a href="#">Carrières</a><a href="#">Presse</a></div>
+            <div class="footer-col"><h4>Solutions</h4><a href="#">Télémédecine</a><a href="#">Kits connectés</a><a href="#">IA Médicale</a><a href="#">API</a></div>
+            <div class="footer-col"><h4>Ressources</h4><a href="#">Documentation</a><a href="#">FAQ</a><a href="#">Support</a><a href="#">Contact</a></div>
+            <div class="footer-col"><h4>Légal</h4><a href="#">Confidentialité</a><a href="#">CGU</a><a href="#">Mentions légales</a><a href="#">Sécurité</a></div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 OXHYGIENE Télémédecine. Tous droits réservés.</p>
+            <p style="margin-top: 10px;">
+                <i class="fas fa-phone"></i> +221 77 571 35 51 | 
+                <i class="fas fa-envelope"></i> contact@oxhygiene.sn
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Navbar scroll effect
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 50) {
+                document.getElementById('navbar').classList.add('scrolled');
+            } else {
+                document.getElementById('navbar').classList.remove('scrolled');
+            }
+        });
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) target.scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+    </script>
+</body>
+</html>
