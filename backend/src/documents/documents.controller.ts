@@ -14,6 +14,16 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { DocumentsService } from './documents.service';
 import { AuthGuard } from '@nestjs/passport';
 
+// Définition manuelle du type MulterFile pour éviter l'erreur TypeScript
+type MulterFile = {
+  fieldname: string;
+  originalname: string;
+  encoding: string;
+  mimetype: string;
+  size: number;
+  buffer: Buffer;
+};
+
 @Controller('documents')
 @UseGuards(AuthGuard('jwt'))
 export class DocumentsController {
@@ -23,7 +33,7 @@ export class DocumentsController {
   @UseInterceptors(FileInterceptor('file'))
   async uploadDocument(
     @Req() req,
-    @UploadedFile() file: Express.Multer.File,
+    @UploadedFile() file: MulterFile,
     @Body('appointmentId') appointmentId: number,
     @Body('fileType') fileType: string,
     @Body('description') description: string,
