@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:3000';
+// URL du backend déployé sur Render
+const API_BASE_URL = 'https://oxhygiene-api.onrender.com';
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -9,6 +10,7 @@ const api = axios.create({
   },
 });
 
+// Intercepteur pour ajouter le token JWT à chaque requête
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
   if (token) {
