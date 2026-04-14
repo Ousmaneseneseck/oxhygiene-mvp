@@ -5,6 +5,16 @@ import { Document } from './document.entity';
 import * as fs from 'fs';
 import * as path from 'path';
 
+// Définition manuelle du type MulterFile pour éviter l'erreur TypeScript
+type MulterFile = {
+  fieldname: string;
+  originalname: string;
+  encoding: string;
+  mimetype: string;
+  size: number;
+  buffer: Buffer;
+};
+
 @Injectable()
 export class DocumentsService {
   private uploadDir = './uploads';
@@ -13,6 +23,7 @@ export class DocumentsService {
     @InjectRepository(Document)
     private documentRepository: Repository<Document>,
   ) {
+    // Créer le dossier uploads s'il n'existe pas
     if (!fs.existsSync(this.uploadDir)) {
       fs.mkdirSync(this.uploadDir, { recursive: true });
       console.log('📁 Dossier uploads créé');
@@ -22,7 +33,7 @@ export class DocumentsService {
   async uploadDocument(
     userId: number,
     appointmentId: number,
-    file: Express.Multer.File,
+    file: MulterFile,
     fileType: string,
     description: string,
   ): Promise<Document> {
