@@ -7,6 +7,7 @@ import { ProfileModule } from './profile/profile.module';
 import { AppointmentsModule } from './appointments/appointments.module';
 import { SlotsModule } from './slots/slots.module';
 import { DocumentsModule } from './documents/documents.module';
+import { HealthModule } from './health/health.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
@@ -23,6 +24,7 @@ import { AppService } from './app.service';
     AppointmentsModule,
     SlotsModule,
     DocumentsModule,
+    HealthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

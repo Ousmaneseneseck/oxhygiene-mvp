@@ -31,12 +31,14 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import DoneAllIcon from '@mui/icons-material/DoneAll';
 import VideoCallIcon from '@mui/icons-material/VideoCall';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 import { useAuth } from '../contexts/AuthContext';
 import api from '../services/api';
 import { Profile, Appointment } from '../types';
 import AppointmentForm from '../components/AppointmentForm';
 import VideoCall from '../components/VideoCall';
 import DocumentUpload from '../components/DocumentUpload';
+import HealthMeasures from '../components/HealthMeasures';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -82,7 +84,6 @@ const Dashboard: React.FC = () => {
       setProfile(profileRes.data);
       setStats(statsRes.data);
       
-      // Gérer les différents formats de réponse
       let appointmentsList = appointmentsRes.data;
       if (appointmentsRes.data && appointmentsRes.data.value) {
         appointmentsList = appointmentsRes.data.value;
@@ -93,7 +94,6 @@ const Dashboard: React.FC = () => {
       console.log('📅 Rendez-vous chargés:', appointmentsList.length);
       setAppointments(appointmentsList);
       
-      // Récupérer les infos des patients (uniquement pour le médecin)
       if (userRole === 'doctor' && appointmentsList.length > 0) {
         const uniquePatientIds: number[] = [];
         appointmentsList.forEach((apt: Appointment) => {
@@ -207,7 +207,6 @@ const Dashboard: React.FC = () => {
       </AppBar>
 
       <Container maxWidth="lg" sx={{ mt: 4 }}>
-        {/* Cartes de statistiques */}
         {stats && (
           <Grid container spacing={2} sx={{ mb: 3 }}>
             <Grid size={{ xs: 6, sm: 2.4 }}>
@@ -262,6 +261,7 @@ const Dashboard: React.FC = () => {
           <Tabs value={tabValue} onChange={(e, v) => setTabValue(v)}>
             <Tab icon={<PersonIcon />} label="Mon Profil" />
             <Tab icon={<CalendarTodayIcon />} label={isDoctor ? "Consultations" : "Mes Rendez-vous"} />
+            <Tab icon={<FavoriteIcon />} label="Santé Connectée" />
           </Tabs>
 
           <TabPanel value={tabValue} index={0}>
@@ -357,7 +357,6 @@ const Dashboard: React.FC = () => {
                       </Grid>
                     </Grid>
                     
-                    {/* Boutons pour le médecin */}
                     {isDoctor && (
                       <Box sx={{ mt: 2, display: 'flex', gap: 1, flexWrap: 'wrap' }}>
                         {apt.status === 'pending' && (
@@ -427,7 +426,6 @@ const Dashboard: React.FC = () => {
                       </Box>
                     )}
                     
-                    {/* Boutons pour le patient */}
                     {!isDoctor && (
                       <Box sx={{ mt: 2, display: 'flex', gap: 1, flexWrap: 'wrap' }}>
                         <Button 
@@ -456,7 +454,6 @@ const Dashboard: React.FC = () => {
                       </Box>
                     )}
                     
-                    {/* Affichage des notes et prescriptions pour le PATIENT */}
                     {!isDoctor && apt.doctorNotes && (
                       <Box sx={{ mt: 2, p: 2, bgcolor: '#e3f2fd', borderRadius: 2 }}>
                         <Typography variant="subtitle2" color="primary" gutterBottom>
@@ -478,7 +475,6 @@ const Dashboard: React.FC = () => {
                       </Box>
                     )}
                     
-                    {/* Affichage des notes pour le médecin */}
                     {isDoctor && apt.doctorNotes && (
                       <Box sx={{ mt: 2, p: 1, bgcolor: '#f5f5f5', borderRadius: 1 }}>
                         <Typography variant="subtitle2" color="textSecondary">Notes du médecin :</Typography>
@@ -496,10 +492,13 @@ const Dashboard: React.FC = () => {
               ))
             )}
           </TabPanel>
+
+          <TabPanel value={tabValue} index={2}>
+            <HealthMeasures />
+          </TabPanel>
         </Paper>
       </Container>
 
-      {/* Dialog pour les notes médicales (médecin seulement) */}
       <Dialog open={notesDialogOpen} onClose={() => setNotesDialogOpen(false)} maxWidth="md" fullWidth>
         <DialogTitle>Notes médicales - Consultation du {selectedAppointment?.date}</DialogTitle>
         <DialogContent>
@@ -531,7 +530,6 @@ const Dashboard: React.FC = () => {
         </DialogActions>
       </Dialog>
 
-      {/* Formulaire de prise de rendez-vous (patient seulement) */}
       <AppointmentForm
         open={formOpen}
         onClose={() => setFormOpen(false)}
@@ -541,7 +539,6 @@ const Dashboard: React.FC = () => {
         }}
       />
 
-      {/* Appel vidéo */}
       {videoCallOpen && (
         <VideoCall 
           roomName={currentRoom} 
@@ -549,7 +546,6 @@ const Dashboard: React.FC = () => {
         />
       )}
 
-      {/* Upload de documents */}
       <DocumentUpload
         open={documentUploadOpen}
         onClose={() => setDocumentUploadOpen(false)}

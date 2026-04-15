@@ -1,0 +1,63 @@
+import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository, Between } from 'typeorm';
+import { HealthMeasure, MeasureType } from './health.entity';
+
+@Injectable()
+export class HealthService {
+  constructor(
+    @InjectRepository(HealthMeasure)
+    private measureRepository: Repository<HealthMeasure>,
+  ) {}
+
+  async addMeasure(
+    userId: number,
+    type: MeasureType,
+    data: any,
+  ): Promise<HealthMeasure> {
+    const measure = this.measureRepository.create({
+      userId,
+      type,
+      ...data,
+    });
+    return this.measureRepository.save(measure);
+  }
+
+  async getUserMeasures(userId: number, type?: MeasureType, days: number = 30) {
+    const dateLimit = new Date();
+    dateLimit.setDate(dateLimit.getDate() - days);
+
+    const where: any = { userId, measuredAt: Between(dateLimit, new Date()) };
+    if (type) where.type = type;
+
+    return this.measureRepository.find({
+      where,
+      order: { measuredAt: 'DESC' },
+    });
+  }
+
+  async getLatestMeasure(userId: number, type: MeasureType) {
+    return this.measureRepository.findOne({
+      where: { userId, type },
+      order: { measuredAt: 'DESC' },
+    });
+  }
+
+  async getStats(userId: number, type: MeasureType) {
+    const measures = await this.getUserMeasures(userId, type, 90);
+    
+    if (measures.length === 0) return null;
+
+    const values = measures.map(m => m.value).filter(v => v);
+    const avg = values.reduce((a, b) => a + b, 0) / values.length;
+
+    return {
+      count: measures.length,
+      average: Math.round(avg * 10) / 10,
+      min: Math.min(...values),
+      max: Math.max(...values),
+      lastValue: measures[0]?.value,
+      lastDate: measures[0]?.measuredAt,
+    };
+  }
+}
