@@ -18,9 +18,13 @@ export class HealthService {
     const measure = this.measureRepository.create({
       userId,
       type,
-      ...data,
+      systolic: data.systolic,
+      diastolic: data.diastolic,
+      value: data.value,
+      unit: data.unit,
+      notes: data.notes,
     });
-    return this.measureRepository.save(measure);
+    return await this.measureRepository.save(measure);
   }
 
   async getUserMeasures(userId: number, type?: MeasureType, days: number = 30) {
@@ -30,14 +34,14 @@ export class HealthService {
     const where: any = { userId, measuredAt: Between(dateLimit, new Date()) };
     if (type) where.type = type;
 
-    return this.measureRepository.find({
+    return await this.measureRepository.find({
       where,
       order: { measuredAt: 'DESC' },
     });
   }
 
   async getLatestMeasure(userId: number, type: MeasureType) {
-    return this.measureRepository.findOne({
+    return await this.measureRepository.findOne({
       where: { userId, type },
       order: { measuredAt: 'DESC' },
     });
@@ -48,7 +52,35 @@ export class HealthService {
     
     if (measures.length === 0) return null;
 
-    const values = measures.map(m => m.value).filter(v => v);
+    // Pour la tension, c'est un objet
+    if (type === 'tension') {
+      const systolicValues = measures.map(m => m.systolic).filter(v => v);
+      const diastolicValues = measures.map(m => m.diastolic).filter(v => v);
+      
+      if (systolicValues.length === 0) return null;
+      
+      const avgSystolic = systolicValues.reduce((a, b) => a + b, 0) / systolicValues.length;
+      const avgDiastolic = diastolicValues.reduce((a, b) => a + b, 0) / diastolicValues.length;
+      
+      return {
+        count: measures.length,
+        average: `${Math.round(avgSystolic)}/${Math.round(avgDiastolic)}`,
+        minSystolic: Math.min(...systolicValues),
+        maxSystolic: Math.max(...systolicValues),
+        minDiastolic: Math.min(...diastolicValues),
+        maxDiastolic: Math.max(...diastolicValues),
+        lastValue: {
+          systolic: measures[0]?.systolic,
+          diastolic: measures[0]?.diastolic,
+        },
+        lastDate: measures[0]?.measuredAt,
+      };
+    }
+    
+    // Pour les autres types
+    const values = measures.map(m => m.value).filter(v => v !== undefined && v !== null);
+    if (values.length === 0) return null;
+    
     const avg = values.reduce((a, b) => a + b, 0) / values.length;
 
     return {
