@@ -53,19 +53,29 @@ export class ImportFullDataController {
     
     // 3. Importer les mesures santé
     const measures = [
-      { userId: patient.id, type: 'tension', systolic: 118, diastolic: 76, unit: 'mmHg', notes: 'À jeun', measuredAt: '2026-04-15 08:15:00' },
-      { userId: patient.id, type: 'glycemie', value: 0.92, unit: 'mg/dL', notes: 'À jeun', measuredAt: '2026-04-15 07:30:00' },
-      { userId: patient.id, type: 'oxygenation', value: 98, unit: '%', notes: 'Repos', measuredAt: '2026-04-15 08:00:00' },
-      { userId: patient.id, type: 'poids', value: 71.2, unit: 'kg', notes: 'À jeun', measuredAt: '2026-04-15 07:30:00' },
-      { userId: patient.id, type: 'temperature', value: 36.6, unit: '°C', notes: 'Normal', measuredAt: '2026-04-15 08:00:00' },
-      { userId: patient.id, type: 'cardiaque', value: 68, unit: 'bpm', notes: 'Repos', measuredAt: '2026-04-15 08:00:00' },
+      { userId: patient.id, type: 'tension', systolic: 118, diastolic: 76, unit: 'mmHg', notes: 'À jeun', measuredAt: new Date('2026-04-15 08:15:00') },
+      { userId: patient.id, type: 'glycemie', value: 0.92, unit: 'mg/dL', notes: 'À jeun', measuredAt: new Date('2026-04-15 07:30:00') },
+      { userId: patient.id, type: 'oxygenation', value: 98, unit: '%', notes: 'Repos', measuredAt: new Date('2026-04-15 08:00:00') },
+      { userId: patient.id, type: 'poids', value: 71.2, unit: 'kg', notes: 'À jeun', measuredAt: new Date('2026-04-15 07:30:00') },
+      { userId: patient.id, type: 'temperature', value: 36.6, unit: '°C', notes: 'Normal', measuredAt: new Date('2026-04-15 08:00:00') },
+      { userId: patient.id, type: 'cardiaque', value: 68, unit: 'bpm', notes: 'Repos', measuredAt: new Date('2026-04-15 08:00:00') },
     ];
     
     for (const measure of measures) {
-      await this.measureRepo.save(measure);
+      try {
+        await this.measureRepo.save(measure);
+      } catch (err) {
+        console.error('Erreur import mesure:', err);
+      }
     }
     console.log(`✅ ${measures.length} mesures importées`);
     
-    return { message: 'Import terminé', appointments: appointments.length, measures: measures.length };
+    return { 
+      message: 'Import terminé', 
+      appointments: appointments.length, 
+      measures: measures.length,
+      patientId: patient.id,
+      doctorId: doctor.id
+    };
   }
 }
