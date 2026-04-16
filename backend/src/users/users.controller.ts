@@ -23,4 +23,16 @@ export class UsersController {
     await this.usersService.updateRole(userId, role);
     return { message: `Rôle mis à jour en tant que ${role}`, userId };
   }
+
+  @Post('fix-doctor-role')
+  @UseGuards(AuthGuard('jwt'))
+  async fixDoctorRole(@Req() req: any) {
+    // Forcer le rôle 'doctor' pour l'utilisateur ID 2 (médecin)
+    await this.usersService.updateRole(2, 'doctor');
+    return { 
+      message: '✅ Rôle médecin corrigé pour ID 2',
+      userId: 2,
+      newRole: 'doctor'
+    };
+  }
 }
