@@ -35,4 +35,12 @@ export class UsersController {
       newRole: 'doctor'
     };
   }
+
+  @Post('clean-duplicates')
+  @UseGuards(AuthGuard('jwt'))
+  async cleanDuplicates() {
+    // Supprimer les doublons du médecin
+    await this.usersService.cleanDuplicateDoctors();
+    return { message: 'Doublons nettoyés, rôle médecin corrigé' };
+  }
 }
