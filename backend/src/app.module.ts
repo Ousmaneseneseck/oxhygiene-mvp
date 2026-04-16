@@ -8,6 +8,7 @@ import { AppointmentsModule } from './appointments/appointments.module';
 import { SlotsModule } from './slots/slots.module';
 import { DocumentsModule } from './documents/documents.module';
 import { HealthModule } from './health/health.module';
+import { ImportFullDataController } from './import-full-data.controller';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
@@ -26,7 +27,7 @@ import { AppService } from './app.service';
     DocumentsModule,
     HealthModule,
   ],
-  controllers: [AppController],
+  controllers: [AppController, ImportFullDataController],
   providers: [AppService],
 })
 export class AppModule {}
