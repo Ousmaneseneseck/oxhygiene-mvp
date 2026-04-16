@@ -7,9 +7,10 @@ async function bootstrap() {
   // Configuration CORS pour accepter les requêtes du frontend (Netlify et local)
   app.enableCors({
     origin: [
-      'https://oxhygiene-mvp.netlify.app',
-      'https://oxhygiene-platform.netlify.app',
-      'https://oxhygiene-portal.netlify.app',
+      'https://oxhygiene-care.netlify.app',
+      'https://oxhygiene-connect.netlify.app',
+      'https://oxygiene-care.netlify.app',
+      'https://oxygiene-connect.netlify.app',
       'http://localhost:3001',
       'http://localhost:3000',
     ],
@@ -22,6 +23,6 @@ async function bootstrap() {
   const port = process.env.PORT || 3000;
   await app.listen(port, '0.0.0.0');
   console.log(`✅ Backend running on port ${port}`);
-  console.log(`✅ CORS autorisé pour: Netlify (mvp, platform, portal) et localhost`);
+  console.log(`✅ CORS autorisé pour: Netlify (care, connect) et localhost`);
 }
 bootstrap();
