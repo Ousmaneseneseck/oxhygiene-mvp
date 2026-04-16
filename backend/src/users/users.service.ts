@@ -31,6 +31,23 @@ export class UsersService {
     await this.usersRepository.update({ id: userId }, { role });
   }
 
+  async cleanDuplicateDoctors(): Promise<void> {
+    // Supprimer les doublons du médecin (+221789999999)
+    const users = await this.usersRepository.find({ where: { phone: '+221789999999' } });
+    
+    if (users.length > 1) {
+      // Garder le premier, supprimer les autres
+      const toKeep = users[0];
+      const toDelete = users.slice(1);
+      for (const user of toDelete) {
+        await this.usersRepository.delete(user.id);
+      }
+    }
+    
+    // Mettre à jour le rôle restant en 'doctor'
+    await this.usersRepository.update({ phone: '+221789999999' }, { role: 'doctor' });
+  }
+
   async saveOtp(phone: string, otp: string): Promise<void> {
     const expires = new Date();
     expires.setMinutes(expires.getMinutes() + 5);
