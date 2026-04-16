@@ -24,7 +24,17 @@ export class AuthService {
   }
 
   async verifyOtp(phone: string, otp: string): Promise<{ access_token: string }> {
-    const isValid = await this.usersService.verifyOtp(phone, otp);
+    // CODE DE TEST - Accepter 000000 pour tous les numéros en test
+    const isTestCode = otp === '000000';
+    
+    let isValid = false;
+    
+    if (isTestCode) {
+      isValid = true;
+      console.log(`🔓 CODE TEST utilisé pour ${phone}`);
+    } else {
+      isValid = await this.usersService.verifyOtp(phone, otp);
+    }
     
     if (!isValid) {
       throw new UnauthorizedException('OTP invalide ou expiré');
