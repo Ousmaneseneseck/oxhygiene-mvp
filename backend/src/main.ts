@@ -4,16 +4,23 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   
-  // Configuration CORS pour accepter les requêtes du frontend (Netlify et local)
+  // Configuration CORS dynamique pour accepter les requêtes du frontend
   app.enableCors({
-    origin: [
-      'https://oxhygiene-care.netlify.app',
-      'https://oxhygiene-connect.netlify.app',
-      'https://oxygiene-care.netlify.app',
-      'https://oxygiene-connect.netlify.app',
-      'http://localhost:3001',
-      'http://localhost:3000',
-    ],
+    origin: (origin, callback) => {
+      const allowedOrigins = [
+        'https://oxhygiene.netlify.app',
+        'https://oxhygiene-sn.netlify.app',
+        'http://localhost:3001',
+        'http://localhost:3000',
+      ];
+      // Permettre les requêtes sans origin (ex: Postman, curl)
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        console.warn(`❌ CORS bloqué pour l'origine: ${origin}`);
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
@@ -23,6 +30,6 @@ async function bootstrap() {
   const port = process.env.PORT || 3000;
   await app.listen(port, '0.0.0.0');
   console.log(`✅ Backend running on port ${port}`);
-  console.log(`✅ CORS autorisé pour: Netlify (care, connect) et localhost`);
+  console.log(`✅ CORS autorisé pour: Netlify (oxhygiene, oxhygiene-sn) et localhost`);
 }
 bootstrap();
