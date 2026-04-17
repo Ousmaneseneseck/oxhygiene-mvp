@@ -18,7 +18,6 @@ export class UsersController {
   @Post('role')
   @UseGuards(AuthGuard('jwt'))
   async updateRole(@Body('role') role: string, @Req() req: any) {
-    // Utiliser l'ID de l'utilisateur authentifié
     const userId = req.user.id;
     await this.usersService.updateRole(userId, role);
     return { message: `Rôle mis à jour en tant que ${role}`, userId };
@@ -27,7 +26,6 @@ export class UsersController {
   @Post('fix-doctor-role')
   @UseGuards(AuthGuard('jwt'))
   async fixDoctorRole(@Req() req: any) {
-    // Forcer le rôle 'doctor' pour l'utilisateur ID 2 (médecin)
     await this.usersService.updateRole(2, 'doctor');
     return { 
       message: '✅ Rôle médecin corrigé pour ID 2',
@@ -39,8 +37,19 @@ export class UsersController {
   @Post('clean-duplicates')
   @UseGuards(AuthGuard('jwt'))
   async cleanDuplicates() {
-    // Supprimer les doublons du médecin
     await this.usersService.cleanDuplicateDoctors();
     return { message: 'Doublons nettoyés, rôle médecin corrigé' };
+  }
+
+  @Post('force-doctor')
+  @UseGuards(AuthGuard('jwt'))
+  async forceDoctorRole(@Req() req: any) {
+    // Chercher l'utilisateur par téléphone
+    const user = await this.usersService.findByPhone('+221789999999');
+    if (!user) {
+      return { message: 'Utilisateur non trouvé' };
+    }
+    await this.usersService.updateRole(user.id, 'doctor');
+    return { message: 'Rôle médecin forcé', userId: user.id, newRole: 'doctor' };
   }
 }
