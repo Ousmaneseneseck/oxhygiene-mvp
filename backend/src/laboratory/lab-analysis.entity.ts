@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, ManyToOne, JoinColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn } from 'typeorm';
 import { Laboratory } from './laboratory.entity';
 import { User } from '../users/user.entity';
 
@@ -25,10 +25,10 @@ export class LabAnalysis {
   laboratory: Laboratory;
 
   @Column()
-  analysisType: string; // 'blood_test', 'urinalysis', 'biopsy', etc.
+  analysisType: string;
 
   @Column({ type: 'text', nullable: true })
-  prescription: string; // Ordonnance du médecin
+  prescription: string;
 
   @Column({ type: 'date' })
   appointmentDate: Date;
@@ -43,7 +43,7 @@ export class LabAnalysis {
   sampleType: SampleType;
 
   @Column({ type: 'text', nullable: true })
-  results: string; // Résultats JSON ou texte
+  results: string;
 
   @Column({ nullable: true })
   resultFileUrl: string;
