@@ -1,3 +1,6 @@
+# Forcer le cache bust (incrémenter cette valeur pour vider le cache Docker)
+ARG CACHEBUST=1
+
 FROM node:18-alpine
 
 WORKDIR /app
