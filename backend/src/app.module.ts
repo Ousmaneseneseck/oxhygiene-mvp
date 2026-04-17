@@ -8,6 +8,7 @@ import { AppointmentsModule } from './appointments/appointments.module';
 import { SlotsModule } from './slots/slots.module';
 import { DocumentsModule } from './documents/documents.module';
 import { HealthModule } from './health/health.module';
+import { LaboratoryModule } from './laboratory/laboratory.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
@@ -25,6 +26,7 @@ import { AppService } from './app.service';
     SlotsModule,
     DocumentsModule,
     HealthModule,
+    LaboratoryModule,
   ],
   controllers: [AppController],
   providers: [AppService],
