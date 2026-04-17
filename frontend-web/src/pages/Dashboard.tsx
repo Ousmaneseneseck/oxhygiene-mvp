@@ -32,6 +32,10 @@ import DoneAllIcon from '@mui/icons-material/DoneAll';
 import VideoCallIcon from '@mui/icons-material/VideoCall';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import StorefrontIcon from '@mui/icons-material/Storefront';
+import PeopleIcon from '@mui/icons-material/People';
+import SearchIcon from '@mui/icons-material/Search';
+import ScienceIcon from '@mui/icons-material/Science';
 import { useAuth } from '../contexts/AuthContext';
 import api from '../services/api';
 import { Profile, Appointment } from '../types';
@@ -39,6 +43,9 @@ import AppointmentForm from '../components/AppointmentForm';
 import VideoCall from '../components/VideoCall';
 import DocumentUpload from '../components/DocumentUpload';
 import HealthMeasures from '../components/HealthMeasures';
+import DoctorSearch from '../components/DoctorSearch';
+import PatientSearch from '../components/PatientSearch';
+import LaboratorySearch from '../components/LaboratorySearch';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -73,6 +80,7 @@ const Dashboard: React.FC = () => {
   const [currentRoom, setCurrentRoom] = useState('');
   const [documentUploadOpen, setDocumentUploadOpen] = useState(false);
   const [selectedAppointmentId, setSelectedAppointmentId] = useState<number | null>(null);
+  const [selectedPatientId, setSelectedPatientId] = useState<number | null>(null);
 
   const fetchData = async () => {
     try {
@@ -91,7 +99,6 @@ const Dashboard: React.FC = () => {
       if (!Array.isArray(appointmentsList)) {
         appointmentsList = [];
       }
-      console.log('📅 Rendez-vous chargés:', appointmentsList.length);
       setAppointments(appointmentsList);
       
       if (userRole === 'doctor' && appointmentsList.length > 0) {
@@ -209,7 +216,7 @@ const Dashboard: React.FC = () => {
       <Container maxWidth="lg" sx={{ mt: 4 }}>
         {stats && (
           <Grid container spacing={2} sx={{ mb: 3 }}>
-            <Grid size={{ xs: 6, sm: 2.4 }}>
+            <Grid xs={6} sm={2.4}>
               <Card sx={{ bgcolor: '#1976d2', color: 'white' }}>
                 <CardContent>
                   <Typography variant="h4">{stats.total}</Typography>
@@ -218,7 +225,7 @@ const Dashboard: React.FC = () => {
                 </CardContent>
               </Card>
             </Grid>
-            <Grid size={{ xs: 6, sm: 2.4 }}>
+            <Grid xs={6} sm={2.4}>
               <Card sx={{ bgcolor: '#ed6c02', color: 'white' }}>
                 <CardContent>
                   <Typography variant="h4">{stats.pending}</Typography>
@@ -227,7 +234,7 @@ const Dashboard: React.FC = () => {
                 </CardContent>
               </Card>
             </Grid>
-            <Grid size={{ xs: 6, sm: 2.4 }}>
+            <Grid xs={6} sm={2.4}>
               <Card sx={{ bgcolor: '#2e7d32', color: 'white' }}>
                 <CardContent>
                   <Typography variant="h4">{stats.confirmed}</Typography>
@@ -236,7 +243,7 @@ const Dashboard: React.FC = () => {
                 </CardContent>
               </Card>
             </Grid>
-            <Grid size={{ xs: 6, sm: 2.4 }}>
+            <Grid xs={6} sm={2.4}>
               <Card sx={{ bgcolor: '#d32f2f', color: 'white' }}>
                 <CardContent>
                   <Typography variant="h4">{stats.cancelled}</Typography>
@@ -245,7 +252,7 @@ const Dashboard: React.FC = () => {
                 </CardContent>
               </Card>
             </Grid>
-            <Grid size={{ xs: 6, sm: 2.4 }}>
+            <Grid xs={6} sm={2.4}>
               <Card sx={{ bgcolor: '#9c27b0', color: 'white' }}>
                 <CardContent>
                   <Typography variant="h4">{stats.completed}</Typography>
@@ -262,6 +269,10 @@ const Dashboard: React.FC = () => {
             <Tab icon={<PersonIcon />} label="Mon Profil" />
             <Tab icon={<CalendarTodayIcon />} label={isDoctor ? "Consultations" : "Mes Rendez-vous"} />
             <Tab icon={<FavoriteIcon />} label="Santé Connectée" />
+            <Tab icon={<StorefrontIcon />} label="Marketplace" />
+            <Tab icon={<ScienceIcon />} label="Laboratoires" />
+            {!isDoctor && <Tab icon={<SearchIcon />} label="Trouver un médecin" />}
+            {isDoctor && <Tab icon={<PeopleIcon />} label="Mes Patients" />}
           </Tabs>
 
           <TabPanel value={tabValue} index={0}>
@@ -269,23 +280,23 @@ const Dashboard: React.FC = () => {
               Informations personnelles
             </Typography>
             <Grid container spacing={2}>
-              <Grid size={{ xs: 12, sm: 6 }}>
+              <Grid xs={12} sm={6}>
                 <Typography variant="subtitle2" color="textSecondary">Nom complet</Typography>
                 <Typography variant="body1">{profile?.fullName || 'Non renseigné'}</Typography>
               </Grid>
-              <Grid size={{ xs: 12, sm: 6 }}>
+              <Grid xs={12} sm={6}>
                 <Typography variant="subtitle2" color="textSecondary">Email</Typography>
                 <Typography variant="body1">{profile?.email || 'Non renseigné'}</Typography>
               </Grid>
-              <Grid size={{ xs: 12, sm: 6 }}>
+              <Grid xs={12} sm={6}>
                 <Typography variant="subtitle2" color="textSecondary">Téléphone</Typography>
                 <Typography variant="body1">{profile?.user?.phone || 'Non renseigné'}</Typography>
               </Grid>
-              <Grid size={{ xs: 12, sm: 6 }}>
+              <Grid xs={12} sm={6}>
                 <Typography variant="subtitle2" color="textSecondary">Groupe sanguin</Typography>
                 <Typography variant="body1">{profile?.bloodType || 'Non renseigné'}</Typography>
               </Grid>
-              <Grid size={{ xs: 12 }}>
+              <Grid xs={12}>
                 <Typography variant="subtitle2" color="textSecondary">Adresse</Typography>
                 <Typography variant="body1">{profile?.address || 'Non renseigné'}</Typography>
               </Grid>
@@ -333,25 +344,25 @@ const Dashboard: React.FC = () => {
                 <Card key={apt.id} sx={{ mb: 2 }}>
                   <CardContent>
                     <Grid container spacing={2}>
-                      <Grid size={{ xs: 12, sm: 2 }}>
+                      <Grid xs={12} sm={2}>
                         <Typography variant="subtitle2" color="textSecondary">Date</Typography>
                         <Typography variant="body1">{apt.date}</Typography>
                       </Grid>
-                      <Grid size={{ xs: 12, sm: 2 }}>
+                      <Grid xs={12} sm={2}>
                         <Typography variant="subtitle2" color="textSecondary">Horaire</Typography>
                         <Typography variant="body1">{apt.timeSlot}</Typography>
                       </Grid>
                       {isDoctor && (
-                        <Grid size={{ xs: 12, sm: 3 }}>
+                        <Grid xs={12} sm={3}>
                           <Typography variant="subtitle2" color="textSecondary">Patient</Typography>
                           <Typography variant="body1">{getPatientName(apt.patientId)}</Typography>
                         </Grid>
                       )}
-                      <Grid size={{ xs: 12, sm: 2 }}>
+                      <Grid xs={12} sm={2}>
                         <Typography variant="subtitle2" color="textSecondary">Statut</Typography>
                         {getStatusChip(apt.status)}
                       </Grid>
-                      <Grid size={{ xs: 12, sm: 3 }}>
+                      <Grid xs={12} sm={3}>
                         <Typography variant="subtitle2" color="textSecondary">Motif</Typography>
                         <Typography variant="body1">{apt.reason}</Typography>
                       </Grid>
@@ -464,12 +475,12 @@ const Dashboard: React.FC = () => {
                         </Typography>
                         {apt.prescription && (
                           <>
-                          <Typography variant="subtitle2" color="primary" gutterBottom sx={{ mt: 1 }}>
-                            💊 Prescription :
-                          </Typography>
-                          <Typography variant="body2" sx={{ whiteSpace: 'pre-wrap' }}>
-                            {apt.prescription}
-                          </Typography>
+                            <Typography variant="subtitle2" color="primary" gutterBottom sx={{ mt: 1 }}>
+                              💊 Prescription :
+                            </Typography>
+                            <Typography variant="body2" sx={{ whiteSpace: 'pre-wrap' }}>
+                              {apt.prescription}
+                            </Typography>
                           </>
                         )}
                       </Box>
@@ -496,6 +507,41 @@ const Dashboard: React.FC = () => {
           <TabPanel value={tabValue} index={2}>
             <HealthMeasures />
           </TabPanel>
+
+          <TabPanel value={tabValue} index={3}>
+            <iframe 
+              src="/oxhygiene-marketplace.html" 
+              style={{ width: '100%', height: '80vh', border: 'none' }}
+              title="Oxhygiene Marketplace"
+            />
+          </TabPanel>
+
+          <TabPanel value={tabValue} index={4}>
+            <LaboratorySearch />
+          </TabPanel>
+
+          {!isDoctor && (
+            <TabPanel value={tabValue} index={5}>
+              <DoctorSearch onSelectDoctor={(doctorId) => {
+                setFormOpen(true);
+              }} />
+            </TabPanel>
+          )}
+
+          {isDoctor && (
+            <TabPanel value={tabValue} index={5}>
+              {selectedPatientId ? (
+                <Box>
+                  <Button onClick={() => setSelectedPatientId(null)} sx={{ mb: 2 }}>
+                    ← Retour à la liste des patients
+                  </Button>
+                  <HealthMeasures patientId={selectedPatientId} readOnly />
+                </Box>
+              ) : (
+                <PatientSearch onSelectPatient={(patientId) => setSelectedPatientId(patientId)} />
+              )}
+            </TabPanel>
+          )}
         </Paper>
       </Container>
 
